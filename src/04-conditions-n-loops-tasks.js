@@ -296,10 +296,27 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
-}
+function isCreditCardNumber(ccn) {
+  const ccnStr = ccn.toString();
+  let sum = 0;
+  let double = false;
 
+  for (let i = ccnStr.length - 1; i >= 0; i -= 1) {
+    let digit = parseInt(ccnStr[i], 10);
+
+    if (double) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+
+    sum += digit;
+    double = !double;
+  }
+
+  return sum % 10 === 0;
+}
 /**
  * Returns the digital root of integer:
  *   step1 : find sum of all digits
@@ -314,8 +331,13 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const numStr = num.toString();
+  let sum = 0;
+  for (let i = 0; i < numStr.length; i += 1) {
+    sum += +numStr[i];
+  }
+  return (sum < 9) ? sum : getDigitalRoot(sum);
 }
 
 
