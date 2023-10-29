@@ -595,8 +595,20 @@ function selectMany(arr, childrenSelector) {
  *   ['one','two','three'], [2]       => 'three'  (arr[2])
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
-function getElementByIndexes(/* arr, indexes */) {
-  throw new Error('Not implemented');
+function getElementByIndexes(arr, indexes) {
+  if (indexes.length === 0) {
+    return undefined;
+  }
+
+  const index = indexes[0];
+
+  if (indexes.length === 1) {
+    return arr[index];
+  } if (Array.isArray(arr[index])) {
+    return getElementByIndexes(arr[index], indexes.slice(1));
+  }
+
+  return undefined;
 }
 
 
@@ -618,8 +630,26 @@ function getElementByIndexes(/* arr, indexes */) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
+function swapHeadAndTail(arr) {
+  if (arr.length <= 1) {
+    return arr;
+  }
+
+  const middle = Math.floor(arr.length / 2);
+
+  const arrEven = arr.length % 2 === 0;
+
+  if (arrEven) {
+    const firstPart = arr.slice(0, middle);
+    const secondPart = arr.slice(middle);
+    const arrNew = secondPart.concat(firstPart);
+    return arrNew;
+  }
+  const firstPart = arr.slice(0, middle);
+  const secondPart = arr.slice(middle + 1);
+  const middleElement = arr.slice(middle, middle + 1);
+  const arrNew = secondPart.concat(middleElement, firstPart);
+  return arrNew;
 }
 
 

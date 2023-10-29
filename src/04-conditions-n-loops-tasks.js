@@ -362,8 +362,33 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const stack = [];
+  const bracketsConfig = [['[', ']'], ['(', ')'], ['{', '}'], ['<', '>']];
+  const bracketsMap = new Map(bracketsConfig.map((pair) => pair));
+  const openBrackets = new Set(bracketsMap.keys());
+  const closeBrackets = new Set(bracketsMap.values());
+
+  for (let i = 0; i < str.length; i += 1) {
+    const char = str[i];
+    if (openBrackets.has(char)) {
+      if (stack.length > 0 && stack[stack.length - 1] === char) {
+        if (char === '|' || char === '7' || char === '8') {
+          stack.pop();
+        } else {
+          stack.push(char);
+        }
+      } else {
+        stack.push(char);
+      }
+    } else if (closeBrackets.has(char)) {
+      if (stack.length === 0 || bracketsMap.get(stack.pop()) !== char) {
+        return false;
+      }
+    }
+  }
+
+  return stack.length === 0;
 }
 
 /**
@@ -439,8 +464,23 @@ function getCommonDirectoryPath(pathes) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const arr1rows = m1.length;
+  const arr1cols = m1[0].length;
+  const arr2cols = m2[0].length;
+
+  const result = new Array(arr1rows);
+  for (let i = 0; i < arr1rows; i += 1) {
+    result[i] = new Array(arr2cols);
+    for (let j = 0; j < arr2cols; j += 1) {
+      result[i][j] = 0;
+      for (let k = 0; k < arr1cols; k += 1) {
+        result[i][j] += m1[i][k] * m2[k][j];
+      }
+    }
+  }
+
+  return result;
 }
 
 
@@ -474,8 +514,28 @@ function getMatrixProduct(/* m1, m2 */) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(/* position */) {
-  throw new Error('Not implemented');
+function evaluateTicTacToePosition(position) {
+  const p = position;
+  const winPositions = [
+    [[0, 0], [0, 1], [0, 2]],
+    [[1, 0], [1, 1], [1, 2]],
+    [[2, 0], [2, 1], [2, 2]],
+    [[0, 0], [1, 0], [2, 0]],
+    [[0, 1], [1, 1], [2, 1]],
+    [[0, 2], [1, 2], [2, 2]],
+    [[0, 0], [1, 1], [2, 2]],
+    [[0, 2], [1, 1], [2, 0]],
+  ];
+
+  for (let i = 0; i < winPositions.length; i += 1) {
+    const posit = winPositions[i];
+    const [a, b, c] = posit;
+    if (p[a[0]][a[1]] && p[a[0]][a[1]] === p[b[0]][b[1]] && p[a[0]][a[1]] === p[c[0]][c[1]]) {
+      return p[a[0]][a[1]];
+    }
+  }
+
+  return undefined;
 }
 
 
